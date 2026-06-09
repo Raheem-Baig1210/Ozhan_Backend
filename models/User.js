@@ -25,8 +25,43 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['customer', 'admin'],
+      enum: ['customer', 'super_admin', 'admin', 'manager', 'inventory_manager', 'marketing_manager', 'customer_support'],
       default: 'customer',
+    },
+    phone: {
+      type: String,
+      default: '',
+    },
+    address: {
+      type: String,
+      default: '',
+    },
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
+    coupons: {
+      type: [String],
+      default: [],
+    },
+    totalSpend: {
+      type: Number,
+      default: 0,
+    },
+    totalOrders: {
+      type: Number,
+      default: 0,
+    },
+    lifetimeValue: {
+      type: Number,
+      default: 0,
+    },
+    purchaseFrequency: {
+      type: Number,
+      default: 0,
+    },
+    lastPurchaseDate: {
+      type: Date,
     },
   },
   {

@@ -14,6 +14,7 @@ const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -50,6 +51,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Root Check Endpoint
 app.get('/', (req, res) => {

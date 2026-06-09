@@ -39,11 +39,12 @@ const protect = async (req, res, next) => {
 
 // Admin middleware
 const admin = (req, res, next) => {
-  if (req.user && req.user.role === 'admin') {
+  const staffRoles = ['super_admin', 'admin', 'manager', 'inventory_manager', 'marketing_manager', 'customer_support'];
+  if (req.user && staffRoles.includes(req.user.role)) {
     next();
   } else {
     res.status(403);
-    res.json({ message: 'Not authorized as an admin' });
+    res.json({ message: 'Not authorized as an admin or staff member' });
   }
 };
 
