@@ -1,18 +1,8 @@
 const path = require('path');
 const multer = require('multer');
 
-// Configure disk storage
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename(req, file, cb) {
-    cb(
-      null,
-      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-    );
-  },
-});
+// Setup memory storage to hold file buffer in memory
+const storage = multer.memoryStorage();
 
 // File filter (only allow images)
 function checkFileType(file, cb) {
