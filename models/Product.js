@@ -125,6 +125,10 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
     reviews: [reviewSchema],
+    embedding: {
+  type: [Number],
+  default: [],
+},
   },
   {
     timestamps: true,

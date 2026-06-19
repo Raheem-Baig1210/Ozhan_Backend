@@ -1,5 +1,7 @@
 const Product = require('../models/Product');
-
+const {
+  generateProductEmbedding,
+} = require("../services/productEmbeddingService");
 // @desc    Fetch all products with optional filters, search, and pagination
 // @route   GET /api/products
 // @access  Public
@@ -65,7 +67,21 @@ const getProductById = async (req, res, next) => {
 // @access  Private/Admin
 const createProduct = async (req, res, next) => {
   try {
-    const { name, price, description, image, brand, category, countInStock } = req.body;
+    const {
+      name,
+      price,
+      description,
+      image,
+      brand,
+      category,
+      countInStock,
+      topNotes,
+      middleNotes,
+      baseNotes,
+      family,
+      gender,
+      occasions,
+    } = req.body;
 
     if (!name || !price || !description || !image || !brand || !category) {
       res.status(400);
@@ -81,8 +97,14 @@ const createProduct = async (req, res, next) => {
       category,
       countInStock: countInStock || 0,
       description,
+      topNotes: topNotes || [],
+      middleNotes: middleNotes || [],
+      baseNotes: baseNotes || [],
+      family: family || 'Floral',
+      gender: gender || 'Unisex',
+      occasions: occasions || [],
     });
-
+    product.embedding = await generateProductEmbedding(product);
     const createdProduct = await product.save();
     res.status(201).json(createdProduct);
   } catch (error) {
@@ -95,7 +117,21 @@ const createProduct = async (req, res, next) => {
 // @access  Private/Admin
 const updateProduct = async (req, res, next) => {
   try {
-    const { name, price, description, image, brand, category, countInStock } = req.body;
+    const {
+      name,
+      price,
+      description,
+      image,
+      brand,
+      category,
+      countInStock,
+      topNotes,
+      middleNotes,
+      baseNotes,
+      family,
+      gender,
+      occasions,
+    } = req.body;
 
     const product = await Product.findById(req.params.id);
 
@@ -107,7 +143,15 @@ const updateProduct = async (req, res, next) => {
       product.brand = brand || product.brand;
       product.category = category || product.category;
       product.countInStock = countInStock !== undefined ? countInStock : product.countInStock;
+      
+      product.topNotes = topNotes !== undefined ? topNotes : product.topNotes;
+      product.middleNotes = middleNotes !== undefined ? middleNotes : product.middleNotes;
+      product.baseNotes = baseNotes !== undefined ? baseNotes : product.baseNotes;
+      product.family = family || product.family;
+      product.gender = gender || product.gender;
+      product.occasions = occasions !== undefined ? occasions : product.occasions;
 
+      product.embedding = await generateProductEmbedding(product);
       const updatedProduct = await product.save();
       res.json(updatedProduct);
     } else {
